@@ -4,12 +4,11 @@ $(document).ready(function() {
 
     $("#hcContent").change(function() {
         var text = $(this).val();
-       
 	   //parse HTML Dom
         $("#questionsDom").html(text);
         //end of parse
 
-		//REMOVE QUESTION CONTROL ' '
+		//REMOVE QUESTION CONTROL
 		$("#questionsDom").find("div.questions-controls").remove();
         
 		//Loop questionsDom to find out the questions
@@ -29,14 +28,10 @@ $(document).ready(function() {
 
                 var nameC = $tr.find('td:eq(1) label').html();
 
-
                 //Replace () from nameC
-                var n = nameC.lastIndexOf(')');
-                //nameC = nameC.replace(")","");
-                nameC = nameC.substring(n + 1);
-				//nameC = nameC.replace(/â€™/,"'");
 				//Fomst nameChoice: remove white space , character in (....)
 				nameC = nameC.replace(/^(\s)*\((\s)*[abcdABCD](\s)*\)(\s)*/, '');
+				nameC = nameC.replace(/'/,"&#8217;");
 				
 				//Remove mean choice is "Không có nội dung cho mục này"
 				$tr.find('td:eq(2)').find('div').remove();
@@ -85,12 +80,12 @@ $(document).ready(function() {
 			//processing with case in <u> tag has content 
 			$question.find("div.section-ask").find('u').each(function(i,e){
 
-				if ($.trim($(this).val()) === '') {
+                if ($(this).html().replace(/&nbsp;/g,'') === '') {
+				     	console.log('text was all whitespace');
 						$(this).after(qTextChoice).remove();	
-           				 //$question.find("div.section-ask").find('u').after(qTextChoice).remove();
 						 // text was all whitespace
 				} else {
-						console.log('text has real content' + $(this).val());
+						console.log('text has real content' + $(this).html().replace(/&nbsp;/g,''));
 						 // text has real content, now free of leading/trailing whitespace
 				}
 				
